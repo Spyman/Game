@@ -20,6 +20,8 @@ namespace Live
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Console.Write("pfffff");
+
         }
 
         /// <summary>
