@@ -15,73 +15,87 @@ namespace Live
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        //testing 
+        Amimation testAnimation; 
+        //closeTesting
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.IsFullScreen = false;
+            testAnimation = new Amimation(); 
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
+            testAnimation.allFrame = 10;
+            testAnimation.Initializate(1f);
+            testAnimation.type = Amimation.AnimationType.Circle;
+            //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
+            testAnimation.Load(Content, "Converted");
+            testAnimation.condensator += new Vector2(300, 300);
+            testAnimation.Update();
+            testAnimation.frame = 0;
+            testAnimation.orign = new Vector2(testAnimation.sourceRectangle.Width/2, testAnimation.sourceRectangle.Height/2);
+            //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        int mouseLook;
+        double oneCircleTime = 0; 
+
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+           
+            if (Mouse.GetState().ScrollWheelValue > mouseLook)
+            {
+                testAnimation.proportion += 0.1f; 
+            }
+            if (Mouse.GetState().ScrollWheelValue < mouseLook)
+            {
+                testAnimation.proportion -= 0.1f; 
+            }
 
+
+            mouseLook = Mouse.GetState().ScrollWheelValue;
+            oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
+            if (oneCircleTime > 10)
+            {
+                testAnimation.Update();
+                oneCircleTime = 0; 
+            }
+            testAnimation.rotation += 0.01f;
+            testAnimation.destinationRectangle.X = Mouse.GetState().X;
+            testAnimation.destinationRectangle.Y = Mouse.GetState().Y; 
             base.Update(gameTime);
         }
+        Vector2 speed; 
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin(); 
+            testAnimation.Draw(spriteBatch);
+            spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }
