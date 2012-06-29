@@ -16,7 +16,7 @@ namespace Live
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         //testing 
-        Amimation testAnimation; 
+        Field testfield; 
         //closeTesting
         public Game1()
         {
@@ -25,14 +25,15 @@ namespace Live
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
             graphics.IsFullScreen = false;
-            testAnimation = new Amimation(); 
+            ///
+            testfield = new Field(); 
+            ///
         }
 
         protected override void Initialize()
         {
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
-            testAnimation.Initializate(1.5f);
-            testAnimation.SetType(Amimation.AnimationType.Circle);
+            testfield.Initialize(); 
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
             base.Initialize();
         }
@@ -41,10 +42,7 @@ namespace Live
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
-            testAnimation.Load(Content, "Converted",10);
-            testAnimation.condensator += new Vector2(300, 300);
-            testAnimation.Update();
-            testAnimation.SetOrign();
+            testfield.LoadContent(Content); 
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
         }
 
@@ -65,11 +63,11 @@ namespace Live
            
             if (Mouse.GetState().ScrollWheelValue > mouseLook)
             {
-                testAnimation.IncProportion(); 
+                testfield.IncProportion(); 
             }
             if (Mouse.GetState().ScrollWheelValue < mouseLook)
             {
-                testAnimation.DecProportion(); 
+                testfield.DecProportion(); 
             }
             
 
@@ -77,19 +75,20 @@ namespace Live
             oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
             if (oneCircleTime > 10)
             {
-                testAnimation.Update();
+                testfield.Update(gameTime.ElapsedGameTime.Milliseconds);
                 oneCircleTime = 0; 
             }
-            testAnimation.rotation += 0.01f;
-            testAnimation.SetCoordinates(Mouse.GetState().X, Mouse.GetState().Y);
+
+            testfield.ShiftLeft(0.3f); 
+
             base.Update(gameTime);
         } 
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin(); 
-            testAnimation.Draw(spriteBatch);
+            spriteBatch.Begin();
+            testfield.Draw(spriteBatch);
             spriteBatch.End();
             
             base.Draw(gameTime);
