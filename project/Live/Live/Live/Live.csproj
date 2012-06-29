@@ -110,9 +110,11 @@
     <Compile Include="Animation.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="field.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="TextButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

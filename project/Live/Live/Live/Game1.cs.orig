@@ -22,7 +22,8 @@ namespace Live
         private bool gameStarted = false;
         private KeyboardState oldState;
         //testing 
-        Field testfield;
+        Field testfield; 
+        Animation testAnimation;
         private TextButton btnStartGame;
         private TextButton btnResume;
         private TextButton btnExit;
@@ -36,7 +37,6 @@ namespace Live
             graphics.IsFullScreen = false;
             ///
             testfield = new Field(); 
-            ///
         }
 
         protected override void Initialize()
@@ -52,9 +52,9 @@ namespace Live
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             segoe24 = Content.Load<SpriteFont>("Segoe UI 24");
-                        testfield.LoadContent(Content);
-
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
+
+            testfield.LoadContent(Content); 
             btnStartGame = new TextButton("start", segoe24, btnStartGame);
             btnResume = new TextButton("resume", segoe24, btnResume);
             btnExit = new TextButton("exit", segoe24, btnExit);
@@ -74,11 +74,7 @@ namespace Live
             UpdateInput(gameTime);
             if (gameRunning)
             {
-                oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
-                if (oneCircleTime > 10)
-                {
-                    oneCircleTime = 0;
-                }
+                
             }
             base.Update(gameTime);
         }
@@ -96,17 +92,7 @@ namespace Live
             {
                 testfield.DecProportion(); 
             }
-            mouseLook = Mouse.GetState().ScrollWheelValue; 
-            
-            oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
-            if (oneCircleTime > 10)
-            {
-                testfield.Update(gameTime.ElapsedGameTime.Milliseconds);
-                oneCircleTime = 0; 
-            }
 
-            testfield.ShiftLeft(0.3f); 
-            
             if (newState.IsKeyDown(Keys.Escape) && gameStarted)
             {
                 // If not down last update, key has just been pressed.                
@@ -137,7 +123,20 @@ namespace Live
             //обновляем состояние клавиатуры
             oldState = newState;
 
+            mouseLook = Mouse.GetState().ScrollWheelValue;
+            oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
+            if (oneCircleTime > 10)
+            {
+                testfield.Update(gameTime.ElapsedGameTime.Milliseconds);
+                oneCircleTime = 0; 
+            }
+
+            testfield.ShiftLeft(0.3f); 
+
+            base.Update(gameTime);
         } 
+            
+            
 
         protected override void Draw(GameTime gameTime)
         {
@@ -178,9 +177,8 @@ namespace Live
 
         private void DrawGame()
         {
-            spriteBatch.Begin();            
+            spriteBatch.Begin();
             testfield.Draw(spriteBatch);
-
             spriteBatch.End();
         }
     }

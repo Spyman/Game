@@ -15,7 +15,7 @@ namespace Live
         private Color color = Color.White;
         //    double updateTime = 17;
         private Rectangle destinationRectangle;
-        public Vector2 origin = new Vector2(0, 0); // Центр вращения!
+        private Vector2 origin = new Vector2(0, 0); // Центр вращения!
         private Rectangle sourceRectangle;
         public float rotation = 0;
         private int frame = 0;
@@ -23,7 +23,7 @@ namespace Live
         private short type = 0;
         public float layoutDepth = 0; // слой глубина
         private float proportion = 1;
-        public Vector2 condensator; // wtf?
+        public Vector2 condensator;
         public SpriteEffects spriteEffect = SpriteEffects.None;
         private float endProportion = 1; 
         //  double passive = 0; ??? 

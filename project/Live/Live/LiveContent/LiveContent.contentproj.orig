@@ -48,14 +48,12 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <Compile Include="OneCell.png">
       <Name>OneCell</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
+      </Compile>
     <Compile Include="segoe24.spritefont">
       <Name>Segoe UI 24</Name>
       <Importer>FontDescriptionImporter</Importer>
