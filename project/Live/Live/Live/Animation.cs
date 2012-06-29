@@ -12,19 +12,20 @@ namespace Live
     class Amimation
     {
         Texture2D texture;
-        public Color color = Color.White;
+        private Color color = Color.White;
         //    double updateTime = 17;
-        public Rectangle destinationRectangle;
-        public Vector2 orign = new Vector2(0, 0); // Центр вращения!
-        public Rectangle sourceRectangle;
+        private Rectangle destinationRectangle;
+        private Vector2 orign = new Vector2(0, 0); // Центр вращения!
+        private Rectangle sourceRectangle;
         public float rotation = 0;
-        public int frame = 0;
-        public int allFrame = 0;
-        public short type = 0;
+        private int frame = 0;
+        private int frameQty = 0;
+        private short type = 0;
         public float layoutDeath = 0; // слой глубина
-        public float proportion = 1;
+        private float proportion = 1;
         public Vector2 condensator;
         public SpriteEffects spriteEffect = SpriteEffects.None;
+        private float endProportion = 1; 
         //  double passive = 0; ??? 
 
         public struct AnimationType
@@ -43,6 +44,7 @@ namespace Live
         public void Initializate(float proportion)
         {
             this.proportion = proportion;
+            endProportion = proportion; 
         }
 
         public void Initializate(Vector2 position, float proportion)
@@ -50,17 +52,20 @@ namespace Live
             destinationRectangle.X = (int)position.X;
             destinationRectangle.Y = (int)position.Y;
             this.proportion = proportion;
+            endProportion = proportion; 
             sourceRectangle.X = (int)position.X;
             sourceRectangle.Y = (int)position.Y;
         }
 
-        public void Load(ContentManager Content, string path)
+        public void Load(ContentManager Content, string path, int frameQty)
         {
+            frame = 0; 
+            this.frameQty = frameQty; 
             texture = Content.Load<Texture2D>(path);
-            destinationRectangle.Height = (int)(texture.Height * proportion);
-            destinationRectangle.Width = (int)((texture.Width * proportion) / allFrame);
+            destinationRectangle.Height = (int)(texture.Height / proportion);
+            destinationRectangle.Width = (int)((texture.Width /proportion) / frameQty);
             sourceRectangle.Height = (int)(texture.Height);
-            sourceRectangle.Width = (int)((texture.Width) / allFrame);
+            sourceRectangle.Width = (int)((texture.Width) / frameQty);
             orign.X = destinationRectangle.Center.X;
             orign.Y = destinationRectangle.Center.Y;
         }
@@ -70,7 +75,7 @@ namespace Live
             switch (type)
             {
                 case 0:
-                    if (frame < allFrame - 1)
+                    if (frame < frameQty - 1)
                     {
                         frame++;
                     }
@@ -80,7 +85,7 @@ namespace Live
                     }
                     break;
                 case 1:
-                    if (frame < allFrame - 1)
+                    if (frame < frameQty - 1)
                     {
                         frame++;
                     }
@@ -100,7 +105,7 @@ namespace Live
                     }
                     break;
                 case 2:
-                    if (frame < allFrame - 1)
+                    if (frame < frameQty - 1)
                     {
                         frame++;
                     }
@@ -112,7 +117,7 @@ namespace Live
                     }
                     else
                     {
-                        frame = allFrame - 1;
+                        frame = frameQty - 1;
                     }
                     break;
             }
@@ -120,6 +125,16 @@ namespace Live
             if (condensator.X <= -1) { destinationRectangle.X += (int)condensator.X; sourceRectangle.X += (int)condensator.X; condensator.X -= (int)condensator.X; }
             if (condensator.Y >= 1) { destinationRectangle.Y += (int)condensator.Y; condensator.Y -= (int)condensator.Y; }
             if (condensator.Y <= -1) { destinationRectangle.Y += (int)condensator.Y; condensator.Y -= (int)condensator.Y; }
+            //smoth scroll !!!
+            if (proportion > endProportion)
+            {
+                proportion -= 0.01f; 
+            }
+            if (proportion < endProportion)
+            {
+                proportion += 0.01f; 
+            }
+            //close
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -128,6 +143,66 @@ namespace Live
             spriteBatch.Draw(texture, 
                 new Rectangle(destinationRectangle.X, destinationRectangle.Y, (int)(destinationRectangle.Width/proportion), (int)(destinationRectangle.Height / proportion)),
                 sourceRectangle, color, rotation, orign, spriteEffect, layoutDeath);
+        }
+
+        public void SetCoordinates(int X, int Y)
+        {
+            destinationRectangle.X = X;
+            destinationRectangle.Y = Y; 
+        }
+
+        public void SetCoordinates(Vector2 coordinates)
+        {
+            destinationRectangle.X = (int)coordinates.X;
+            destinationRectangle.Y = (int)coordinates.Y; 
+        }
+
+        public Vector2 GetCoordinates()
+        {
+            return new Vector2(destinationRectangle.X, destinationRectangle.Y); 
+        }
+        
+        public void IncProportion()
+        {
+            endProportion+=0.1f; 
+        }
+
+        public void DecProportion()
+        {
+            endProportion-=0.1f;
+        }
+
+        public void SetProportion(float nProportion)
+        {
+            endProportion = nProportion;
+        }
+
+        public void SetOrign()
+        {
+            orign = new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2);
+        }
+        public void SetOrign(Vector2 orign)
+        {
+            this.orign = orign; 
+        }
+
+        public void SetFrame(int frame)
+        {
+            this.frame = frame; 
+        }
+        public void SetType(short type)
+        {
+            this.type = type; 
+        }
+
+        public void IncRotation(float increment)
+        {
+            rotation += increment; 
+        }
+
+        public void SetColor(Color color)
+        {
+            this.color = color; 
         }
 
     }

@@ -31,9 +31,8 @@ namespace Live
         protected override void Initialize()
         {
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
-            testAnimation.allFrame = 10;
-            testAnimation.Initializate(1f);
-            testAnimation.type = Amimation.AnimationType.Circle;
+            testAnimation.Initializate(1.5f);
+            testAnimation.SetType(Amimation.AnimationType.Circle);
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
             base.Initialize();
         }
@@ -42,11 +41,10 @@ namespace Live
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
-            testAnimation.Load(Content, "Converted");
+            testAnimation.Load(Content, "Converted",10);
             testAnimation.condensator += new Vector2(300, 300);
             testAnimation.Update();
-            testAnimation.frame = 0;
-            testAnimation.orign = new Vector2(testAnimation.sourceRectangle.Width/2, testAnimation.sourceRectangle.Height/2);
+            testAnimation.SetOrign();
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
         }
 
@@ -67,13 +65,13 @@ namespace Live
            
             if (Mouse.GetState().ScrollWheelValue > mouseLook)
             {
-                testAnimation.proportion += 0.1f; 
+                testAnimation.IncProportion(); 
             }
             if (Mouse.GetState().ScrollWheelValue < mouseLook)
             {
-                testAnimation.proportion -= 0.1f; 
+                testAnimation.DecProportion(); 
             }
-
+            
 
             mouseLook = Mouse.GetState().ScrollWheelValue;
             oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
@@ -83,11 +81,9 @@ namespace Live
                 oneCircleTime = 0; 
             }
             testAnimation.rotation += 0.01f;
-            testAnimation.destinationRectangle.X = Mouse.GetState().X;
-            testAnimation.destinationRectangle.Y = Mouse.GetState().Y; 
+            testAnimation.SetCoordinates(Mouse.GetState().X, Mouse.GetState().Y);
             base.Update(gameTime);
-        }
-        Vector2 speed; 
+        } 
 
         protected override void Draw(GameTime gameTime)
         {
