@@ -35,9 +35,7 @@ namespace Live
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             graphics.IsFullScreen = false;
-            ///
-            testfield = new Field(); 
-            ///
+            testfield = new Field();
         }
 
         protected override void Initialize()
@@ -76,11 +74,7 @@ namespace Live
             UpdateInput(gameTime);
             if (gameRunning)
             {
-                oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
-                if (oneCircleTime > 10)
-                {
-                    oneCircleTime = 0;
-                }
+
             }
             base.Update(gameTime);
         }
@@ -193,7 +187,6 @@ namespace Live
         {
             spriteBatch.Begin();            
             testfield.Draw(spriteBatch);
-
             spriteBatch.End();
         }
     }

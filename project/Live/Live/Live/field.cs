@@ -19,6 +19,7 @@ namespace Live
         Texture2D oneCell;
         Rectangle sourceRectangle, destinationRectangle;
         Color[,] colorMap;
+        short[,] weightMap; 
         float proportion = 1f;
         float endProportion = 1f;
         Vector2 condensator; 
@@ -32,21 +33,68 @@ namespace Live
             random = new Random(); 
             colorMap = new Color[100, 100]; 
             net = new Cell[100,100];
-            // for test/ 
-            for(int i = 0; i<100; i++)
-            {
+            for (int i = 0; i < 100; i++)
                 for (int j = 0; j < 100; j++)
                 {
-                    colorMap[i,j] = new Color(random.Next(100,255),random.Next(100,255),random.Next(100,255));
+                    { net[i, j] = new Cell(); }
                 }
-            }
+            weightMap = new short[100, 100]; 
+            // for test/ 
+            
             //---------/
         }
 
 
         public void Initialize()
         {
+            RandomGeneration(1);
+            Repain(); 
+        }
 
+        public void Repain()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    switch (net[i, j].Type)
+                    {
+                        case 0:
+                            colorMap[i, j] = Color.White;
+                            break;
+                        case 1:
+                            colorMap[i, j] = new Color(10, weightMap[i, j], 10);
+                            break;
+                        case 2:
+                            colorMap[i, j] = new Color(10, 10, weightMap[i, j]);
+                            break;
+                        case 3:
+                            colorMap[i, j] = new Color(weightMap[i, j], 10, 10);
+                            break;
+                        case 4:
+                            colorMap[i, j] = new Color(weightMap[i, j], weightMap[i, j], 10);
+                            break;
+                        case 5:
+                            colorMap[i, j] = new Color(10, weightMap[i, j], weightMap[i, j]);
+                            break;
+                        case 6:
+                            colorMap[i, j] = new Color(weightMap[i, j], weightMap[i, j], weightMap[i, j]);
+                            break;
+                        case 7:
+                            colorMap[i, j] = Color.YellowGreen;
+                            break;
+                        case 8:
+                            colorMap[i, j] = Color.White;
+                            break;
+                        case 9:
+                            colorMap[i, j] = Color.White;
+                            break;
+                        case 10:
+                            colorMap[i, j] = Color.White;
+                            break;
+                    }
+                }
+            }
         }
 
         public void LoadContent(ContentManager Content)
@@ -55,22 +103,24 @@ namespace Live
             sourceRectangle.Height = oneCell.Height;
             sourceRectangle.Width = oneCell.Width;
             destinationRectangle.Height = (int)(oneCell.Height / proportion);
-            destinationRectangle.Width = (int)(oneCell.Width / proportion);
+            destinationRectangle.Width = (int)(oneCell.Width / proportion);         
         }
 
         float kpl = 0.01f; 
         public void Update(float gameTime)
         {
             //smoth scroll !!!
-            if (proportion > endProportion)
+            if (proportion > endProportion + 0.05)
             {
                 proportion -= kpl;
+
               //  kpl = (float)(Math.Pow(proportion*0.1f,2));
             }
-            if (proportion < endProportion)
+            if (proportion < endProportion - 0.05)
             {
                 proportion += kpl;
-            //    kpl = (float)(Math.Pow(proportion*0.1f,2));
+
+               // kpl = (float)(Math.Pow(proportion*0.1f,2));
             }
 
             //close
@@ -82,17 +132,10 @@ namespace Live
             {
                 for (int j = 0; j < 100; j++)
                 {
-                  //  if ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i) > -300) && // Возможно не работает. Возможно аппаратно будет обрезаться и без условий
-                  //      ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion))) < SCREEN_WIDTH)) // через T&L ? тогда будет работать быстрее без них. 
-                  //  {
-                     //   if ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion) * i) > -300) &&
-                     //   ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion))) < SCREEN_HEIGHT))
-                     //   {
+                            
                             spriteBatch.Draw(oneCell,
                             new Rectangle(destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i), destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion) * j), (int)(destinationRectangle.Width / proportion), (int)(destinationRectangle.Height / proportion)),
                             sourceRectangle, colorMap[i, j], 0, Vector2.Zero, SpriteEffects.None, 0);
-                     //   }
-                  //  }
                 }
             }
         }
@@ -104,14 +147,15 @@ namespace Live
             {
                 for (int j = 0; j<100; j++)
                 {
-                    net[i, j].Type = (short)random.Next(0, _typeQty); 
+                    net[i, j].Type = (short)random.Next(0, _typeQty);
+                    weightMap[i, j] = (short)random.Next(0, 255); 
                 }
             }
         }
 
         public void IncProportion()
         {
-            endProportion += 0.1f; 
+            endProportion += 0.1f;
         }
 
         public void DecProportion()
