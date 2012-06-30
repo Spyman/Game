@@ -23,12 +23,13 @@ namespace Live
         float endProportion = 1f;
         Vector2 condensator; 
         //----------------------------
-        int resolutionHeight = 600;
-        int resolutionWidth = 800; 
+        int SCREEN_HEIGHT = 600;
+        int SCREEN_WIDTH = 800; 
         //----------------------------
 
         public Field()
         {
+            random = new Random(); 
             colorMap = new Color[100, 100]; 
             net = new Cell[100,100];
             // for test/ 
@@ -36,7 +37,7 @@ namespace Live
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    colorMap[i,j] = Color.White;
+                    colorMap[i,j] = new Color(random.Next(100,255),random.Next(100,255),random.Next(100,255));
                 }
             }
             //---------/
@@ -57,17 +58,21 @@ namespace Live
             destinationRectangle.Width = (int)(oneCell.Width / proportion);
         }
 
+        float kpl = 0.01f; 
         public void Update(float gameTime)
         {
             //smoth scroll !!!
             if (proportion > endProportion)
             {
-                proportion -= 0.01f;
+                proportion -= kpl;
+              //  kpl = (float)(Math.Pow(proportion*0.1f,2));
             }
             if (proportion < endProportion)
             {
-                proportion += 0.01f;
+                proportion += kpl;
+            //    kpl = (float)(Math.Pow(proportion*0.1f,2));
             }
+
             //close
         }
 
@@ -77,17 +82,17 @@ namespace Live
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    if ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i) > -150) && // Возможно не работает. Возможно аппаратно будет обрезаться и без условий
-                        ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion))) < resolutionWidth)) // через T&L ? тогда будет работать быстрее без них. 
-                    {
-                        if ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion) * i) > -150) &&
-                        ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion))) < resolutionHeight))
-                        {
+                  //  if ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i) > -300) && // Возможно не работает. Возможно аппаратно будет обрезаться и без условий
+                  //      ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion))) < SCREEN_WIDTH)) // через T&L ? тогда будет работать быстрее без них. 
+                  //  {
+                     //   if ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion) * i) > -300) &&
+                     //   ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion))) < SCREEN_HEIGHT))
+                     //   {
                             spriteBatch.Draw(oneCell,
                             new Rectangle(destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i), destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion) * j), (int)(destinationRectangle.Width / proportion), (int)(destinationRectangle.Height / proportion)),
                             sourceRectangle, colorMap[i, j], 0, Vector2.Zero, SpriteEffects.None, 0);
-                        }
-                    }
+                     //   }
+                  //  }
                 }
             }
         }
@@ -106,7 +111,7 @@ namespace Live
 
         public void IncProportion()
         {
-            endProportion += 0.1f;
+            endProportion += 0.1f; 
         }
 
         public void DecProportion()
@@ -119,23 +124,13 @@ namespace Live
             endProportion = nProportion;
         }
 
-        public void ShiftLeft(float speed)
+        public void Move(Vector2 speed)
         {
-            condensator.X -= speed;
-            if (condensator.X <= -1)
-            {
-                destinationRectangle.X += (int)condensator.X;
-                condensator.X -= (int)condensator.X; 
-            }
-        }
-        public void ShiftRight(float speed)
-        {
-            condensator.X += speed; 
-            if (condensator.X >= 1)
-            {
-                destinationRectangle.X += (int)condensator.X;
-                condensator.X -= (int)condensator.X;
-            }
+            condensator -= speed;
+            if (condensator.X >= 1) { destinationRectangle.X += (int)condensator.X; condensator.X -= (int)condensator.X; }
+            if (condensator.X <= -1) { destinationRectangle.X += (int)condensator.X;  condensator.X -= (int)condensator.X; }
+            if (condensator.Y >= 1) { destinationRectangle.Y += (int)condensator.Y; condensator.Y -= (int)condensator.Y; }
+            if (condensator.Y <= -1) { destinationRectangle.Y += (int)condensator.Y; condensator.Y -= (int)condensator.Y; }
         }
     }
 }

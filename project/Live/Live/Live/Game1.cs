@@ -15,6 +15,7 @@ namespace Live
     {
         public const int SCREEN_WIDTH = 800;
         public const int SCREEN_HEIGHT = 600;
+        public float proportionS = 1f; 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private SpriteFont segoe24;
@@ -42,7 +43,8 @@ namespace Live
         protected override void Initialize()
         {
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
-            testfield.Initialize(); 
+            testfield.Initialize();
+            screenSenter = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2); 
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
             oldState = Keyboard.GetState();
             base.Initialize();
@@ -64,7 +66,7 @@ namespace Live
         {
 
         }
-        int mouseLook;
+        int scrollPosition;
         double oneCircleTime = 0; 
 
         protected override void Update(GameTime gameTime)
@@ -83,21 +85,33 @@ namespace Live
             base.Update(gameTime);
         }
 
+        MouseState mouse;
+        Vector2 screenSenter;
+        Vector2 mouseVector; 
         //обновление клавиатуры, мыши, геймпада
         private void UpdateInput(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
+            mouse = Mouse.GetState();
 
-            if (Mouse.GetState().ScrollWheelValue > mouseLook)
+            if (mouse.ScrollWheelValue > scrollPosition)
             {
                 testfield.IncProportion(); 
             }
-            if (Mouse.GetState().ScrollWheelValue < mouseLook)
+            if (mouse.ScrollWheelValue < scrollPosition)
             {
                 testfield.DecProportion(); 
             }
-            mouseLook = Mouse.GetState().ScrollWheelValue; 
-            
+            scrollPosition = mouse.ScrollWheelValue;
+            mouseVector.X = mouse.X - screenSenter.X; 
+            mouseVector.Y = mouse.Y - screenSenter.Y;
+            if (mouseVector.Length() > 200 * proportionS)
+            {
+                mouseVector.X = mouseVector.X * Math.Abs(mouseVector.X) * 0.0001f;
+                mouseVector.Y = mouseVector.Y * Math.Abs(mouseVector.Y) * 0.0001f; 
+                testfield.Move(mouseVector);
+            }
+
             oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
             if (oneCircleTime > 10)
             {
@@ -105,7 +119,6 @@ namespace Live
                 oneCircleTime = 0; 
             }
 
-            testfield.ShiftLeft(0.3f); 
             
             if (newState.IsKeyDown(Keys.Escape) && gameStarted)
             {
