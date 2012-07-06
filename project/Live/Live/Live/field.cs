@@ -13,12 +13,6 @@ namespace Live
 {
     class Field
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-        const int _typeQty = 10; 
-=======
-=======
->>>>>>> final
         protected float _zoom; // Camera Zoom
         public Matrix _transform; // Matrix Transform
         public Vector2 _pos; // Camera Position
@@ -28,39 +22,11 @@ namespace Live
         protected float _zoomMin = 0.5f;
 
         const int _typeQty = 10;
-<<<<<<< HEAD
->>>>>>> final
-=======
->>>>>>> final
         Cell[,] net;
         Random random;
         Texture2D oneCell;
         Rectangle sourceRectangle, destinationRectangle;
         Color[,] colorMap;
-<<<<<<< HEAD
-<<<<<<< HEAD
-        float proportion = 1f;
-        float endProportion = 1f;
-        Vector2 condensator; 
-        //----------------------------
-        int SCREEN_HEIGHT = 600;
-        int SCREEN_WIDTH = 800; 
-        //----------------------------
-
-        public Field()
-        {
-            random = new Random(); 
-            colorMap = new Color[100, 100]; 
-            net = new Cell[100,100];
-            // for test/ 
-            for(int i = 0; i<100; i++)
-            {
-                for (int j = 0; j < 100; j++)
-                {
-                    colorMap[i,j] = new Color(random.Next(100,255),random.Next(100,255),random.Next(100,255));
-=======
-=======
->>>>>>> final
 
         public Field()
         {
@@ -78,24 +44,11 @@ namespace Live
                 for (int j = 0; j < 100; j++)
                 {
                     colorMap[i, j] = new Color(random.Next(100, 255), random.Next(100, 255), random.Next(100, 255));
-<<<<<<< HEAD
->>>>>>> final
-=======
->>>>>>> final
                 }
             }
             //---------/
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-        public void Initialize()
-        {
-
-=======
-=======
->>>>>>> final
         // Sets and gets zoom
         public float Zoom
         {
@@ -119,10 +72,6 @@ namespace Live
         {
             get { return _pos; }
             set { _pos = value; }
-<<<<<<< HEAD
->>>>>>> final
-=======
->>>>>>> final
         }
 
         public void LoadContent(ContentManager Content)
@@ -130,31 +79,6 @@ namespace Live
             oneCell = Content.Load<Texture2D>("oneCell");
             sourceRectangle.Height = oneCell.Height;
             sourceRectangle.Width = oneCell.Width;
-<<<<<<< HEAD
-<<<<<<< HEAD
-            destinationRectangle.Height = (int)(oneCell.Height / proportion);
-            destinationRectangle.Width = (int)(oneCell.Width / proportion);
-        }
-
-        float kpl = 0.01f; 
-        public void Update(float gameTime)
-        {
-            //smoth scroll !!!
-            if (proportion > endProportion)
-            {
-                proportion -= kpl;
-              //  kpl = (float)(Math.Pow(proportion*0.1f,2));
-            }
-            if (proportion < endProportion)
-            {
-                proportion += kpl;
-            //    kpl = (float)(Math.Pow(proportion*0.1f,2));
-            }
-
-            //close
-=======
-=======
->>>>>>> final
             destinationRectangle.Height = (int)(oneCell.Height / _zoom);
             destinationRectangle.Width = (int)(oneCell.Width / _zoom);
         }
@@ -172,10 +96,6 @@ namespace Live
         public void Update()
         {
 
-<<<<<<< HEAD
->>>>>>> final
-=======
->>>>>>> final
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -184,75 +104,17 @@ namespace Live
             {
                 for (int j = 0; j < 100; j++)
                 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                  //  if ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i) > -300) && // Возможно не работает. Возможно аппаратно будет обрезаться и без условий
-                  //      ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion))) < SCREEN_WIDTH)) // через T&L ? тогда будет работать быстрее без них. 
-                  //  {
-                     //   if ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion) * i) > -300) &&
-                     //   ((destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion))) < SCREEN_HEIGHT))
-                     //   {
-                            spriteBatch.Draw(oneCell,
-                            new Rectangle(destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i), destinationRectangle.Y + ((int)(destinationRectangle.Height / proportion) * j), (int)(destinationRectangle.Width / proportion), (int)(destinationRectangle.Height / proportion)),
-                            sourceRectangle, colorMap[i, j], 0, Vector2.Zero, SpriteEffects.None, 0);
-                     //   }
-                  //  }
-=======
-=======
->>>>>>> final
 
                     spriteBatch.Draw(oneCell,
                     new Rectangle(destinationRectangle.X + ((int)(destinationRectangle.Width) * i), destinationRectangle.Y + ((int)(destinationRectangle.Height) * j), (int)(destinationRectangle.Width), (int)(destinationRectangle.Height)),
                     sourceRectangle, colorMap[i, j], 0, new Vector2(sourceRectangle.Width, sourceRectangle.Height), SpriteEffects.None, 0);
 
-<<<<<<< HEAD
->>>>>>> final
-=======
->>>>>>> final
                 }
             }
         }
 
         public void RandomGeneration(int level)
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-            random = new Random(); 
-            for (int i = 0; i < 100; i++)
-            {
-                for (int j = 0; j<100; j++)
-                {
-                    net[i, j].Type = (short)random.Next(0, _typeQty); 
-                }
-            }
-        }
-
-        public void IncProportion()
-        {
-            endProportion += 0.1f; 
-        }
-
-        public void DecProportion()
-        {
-            endProportion -= 0.1f;
-        }
-
-        public void SetProportion(float nProportion)
-        {
-            endProportion = nProportion;
-        }
-
-        public void Move(Vector2 speed)
-        {
-            condensator -= speed;
-            if (condensator.X >= 1) { destinationRectangle.X += (int)condensator.X; condensator.X -= (int)condensator.X; }
-            if (condensator.X <= -1) { destinationRectangle.X += (int)condensator.X;  condensator.X -= (int)condensator.X; }
-            if (condensator.Y >= 1) { destinationRectangle.Y += (int)condensator.Y; condensator.Y -= (int)condensator.Y; }
-            if (condensator.Y <= -1) { destinationRectangle.Y += (int)condensator.Y; condensator.Y -= (int)condensator.Y; }
-        }
-=======
-=======
->>>>>>> final
             random = new Random();
             for (int i = 0; i < 100; i++)
             {
@@ -262,9 +124,5 @@ namespace Live
                 }
             }
         }
-<<<<<<< HEAD
->>>>>>> final
-=======
->>>>>>> final
     }
 }
