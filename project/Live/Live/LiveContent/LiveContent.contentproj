@@ -48,7 +48,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <Compile Include="OneCell.png">
       <Name>OneCell</Name>
       <Importer>TextureImporter</Importer>
@@ -75,6 +75,13 @@
     </Compile>
     <Compile Include="refresh.png">
       <Name>refresh</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bluebgr.png">
+      <Name>bluebgr</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
