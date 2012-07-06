@@ -14,8 +14,11 @@ namespace Live
     class Field
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         const int _typeQty = 10; 
 =======
+=======
+>>>>>>> final
         protected float _zoom; // Camera Zoom
         public Matrix _transform; // Matrix Transform
         public Vector2 _pos; // Camera Position
@@ -25,12 +28,16 @@ namespace Live
         protected float _zoomMin = 0.5f;
 
         const int _typeQty = 10;
+<<<<<<< HEAD
+>>>>>>> final
+=======
 >>>>>>> final
         Cell[,] net;
         Random random;
         Texture2D oneCell;
         Rectangle sourceRectangle, destinationRectangle;
         Color[,] colorMap;
+<<<<<<< HEAD
 <<<<<<< HEAD
         float proportion = 1f;
         float endProportion = 1f;
@@ -52,6 +59,8 @@ namespace Live
                 {
                     colorMap[i,j] = new Color(random.Next(100,255),random.Next(100,255),random.Next(100,255));
 =======
+=======
+>>>>>>> final
 
         public Field()
         {
@@ -69,6 +78,9 @@ namespace Live
                 for (int j = 0; j < 100; j++)
                 {
                     colorMap[i, j] = new Color(random.Next(100, 255), random.Next(100, 255), random.Next(100, 255));
+<<<<<<< HEAD
+>>>>>>> final
+=======
 >>>>>>> final
                 }
             }
@@ -76,11 +88,14 @@ namespace Live
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         public void Initialize()
         {
 
 =======
+=======
+>>>>>>> final
         // Sets and gets zoom
         public float Zoom
         {
@@ -104,6 +119,9 @@ namespace Live
         {
             get { return _pos; }
             set { _pos = value; }
+<<<<<<< HEAD
+>>>>>>> final
+=======
 >>>>>>> final
         }
 
@@ -112,6 +130,7 @@ namespace Live
             oneCell = Content.Load<Texture2D>("oneCell");
             sourceRectangle.Height = oneCell.Height;
             sourceRectangle.Width = oneCell.Width;
+<<<<<<< HEAD
 <<<<<<< HEAD
             destinationRectangle.Height = (int)(oneCell.Height / proportion);
             destinationRectangle.Width = (int)(oneCell.Width / proportion);
@@ -134,6 +153,8 @@ namespace Live
 
             //close
 =======
+=======
+>>>>>>> final
             destinationRectangle.Height = (int)(oneCell.Height / _zoom);
             destinationRectangle.Width = (int)(oneCell.Width / _zoom);
         }
@@ -151,6 +172,9 @@ namespace Live
         public void Update()
         {
 
+<<<<<<< HEAD
+>>>>>>> final
+=======
 >>>>>>> final
         }
 
@@ -160,6 +184,7 @@ namespace Live
             {
                 for (int j = 0; j < 100; j++)
                 {
+<<<<<<< HEAD
 <<<<<<< HEAD
                   //  if ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion) * i) > -300) && // Возможно не работает. Возможно аппаратно будет обрезаться и без условий
                   //      ((destinationRectangle.X + ((int)(destinationRectangle.Width / proportion))) < SCREEN_WIDTH)) // через T&L ? тогда будет работать быстрее без них. 
@@ -173,11 +198,16 @@ namespace Live
                      //   }
                   //  }
 =======
+=======
+>>>>>>> final
 
                     spriteBatch.Draw(oneCell,
                     new Rectangle(destinationRectangle.X + ((int)(destinationRectangle.Width) * i), destinationRectangle.Y + ((int)(destinationRectangle.Height) * j), (int)(destinationRectangle.Width), (int)(destinationRectangle.Height)),
                     sourceRectangle, colorMap[i, j], 0, new Vector2(sourceRectangle.Width, sourceRectangle.Height), SpriteEffects.None, 0);
 
+<<<<<<< HEAD
+>>>>>>> final
+=======
 >>>>>>> final
                 }
             }
@@ -185,6 +215,7 @@ namespace Live
 
         public void RandomGeneration(int level)
         {
+<<<<<<< HEAD
 <<<<<<< HEAD
             random = new Random(); 
             for (int i = 0; i < 100; i++)
@@ -220,6 +251,8 @@ namespace Live
             if (condensator.Y <= -1) { destinationRectangle.Y += (int)condensator.Y; condensator.Y -= (int)condensator.Y; }
         }
 =======
+=======
+>>>>>>> final
             random = new Random();
             for (int i = 0; i < 100; i++)
             {
@@ -229,6 +262,9 @@ namespace Live
                 }
             }
         }
+<<<<<<< HEAD
+>>>>>>> final
+=======
 >>>>>>> final
     }
 }
