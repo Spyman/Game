@@ -23,7 +23,7 @@ namespace Live
         private bool gameStarted = false;
         private KeyboardState oldState;
         //testing 
-        Field testfield;
+        Test tTest; 
         private TextButton btnStartGame;
         private TextButton btnResume;
         private TextButton btnExit;
@@ -35,14 +35,13 @@ namespace Live
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             graphics.IsFullScreen = false;
-            testfield = new Field();
+            tTest = new Test(); 
         }
 
         protected override void Initialize()
         {
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
-            testfield.Initialize();
-            screenSenter = new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2); 
+            tTest.Initialize(); 
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
             oldState = Keyboard.GetState();
             base.Initialize();
@@ -52,7 +51,7 @@ namespace Live
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             segoe24 = Content.Load<SpriteFont>("Segoe UI 24");
-                        testfield.LoadContent(Content);
+            tTest.LoadContent(Content);
 
             //TESTING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TESTING//
             btnStartGame = new TextButton("start", segoe24, btnStartGame);
@@ -62,10 +61,8 @@ namespace Live
         }
         protected override void UnloadContent()
         {
-
         }
-        int scrollPosition;
-        double oneCircleTime = 0; 
+
 
         protected override void Update(GameTime gameTime)
         {
@@ -74,46 +71,16 @@ namespace Live
             UpdateInput(gameTime);
             if (gameRunning)
             {
-
+                tTest.Update(gameTime); 
             }
             base.Update(gameTime);
         }
 
-        MouseState mouse;
-        Vector2 screenSenter;
-        Vector2 mouseVector; 
         //обновление клавиатуры, мыши, геймпада
         private void UpdateInput(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
-            mouse = Mouse.GetState();
-
-            if (mouse.ScrollWheelValue > scrollPosition)
-            {
-                testfield.IncProportion(); 
-            }
-            if (mouse.ScrollWheelValue < scrollPosition)
-            {
-                testfield.DecProportion(); 
-            }
-            scrollPosition = mouse.ScrollWheelValue;
-            mouseVector.X = mouse.X - screenSenter.X; 
-            mouseVector.Y = mouse.Y - screenSenter.Y;
-            if (mouseVector.Length() > 200 * proportionS)
-            {
-                mouseVector.X = mouseVector.X * Math.Abs(mouseVector.X) * 0.0001f;
-                mouseVector.Y = mouseVector.Y * Math.Abs(mouseVector.Y) * 0.0001f; 
-                testfield.Move(mouseVector);
-            }
-
-            oneCircleTime += gameTime.ElapsedGameTime.Milliseconds;
-            if (oneCircleTime > 10)
-            {
-                testfield.Update(gameTime.ElapsedGameTime.Milliseconds);
-                oneCircleTime = 0; 
-            }
-
-            
+          
             if (newState.IsKeyDown(Keys.Escape) && gameStarted)
             {
                 // If not down last update, key has just been pressed.                
@@ -185,9 +152,9 @@ namespace Live
 
         private void DrawGame()
         {
-            spriteBatch.Begin();            
-            testfield.Draw(spriteBatch);
-            spriteBatch.End();
+            
+            tTest.Draw(spriteBatch, GraphicsDevice); 
+            
         }
     }
 }
